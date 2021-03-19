@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreServices.Api.Author", "TiendaServicios.Api.Autor\StoreServices.Api.Author.csproj", "{90ACACD1-6D87-4E1B-8F93-C1FBF57E1645}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreServices.Api.Author", "StoreServices.Api.Autor\StoreServices.Api.Author.csproj", "{90ACACD1-6D87-4E1B-8F93-C1FBF57E1645}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
