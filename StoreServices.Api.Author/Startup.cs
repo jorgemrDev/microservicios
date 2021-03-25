@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using StoreServices.Api.Author.Application;
 using StoreServices.Api.Author.Repository;
 using System;
 using System.Collections.Generic;
@@ -37,6 +39,8 @@ namespace StoreServices.Api.Autor
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StoreServices.Api.Autor", Version = "v1" });
             });
+
+            services.AddMediatR(typeof(New.Handler).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

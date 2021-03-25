@@ -22,7 +22,7 @@ namespace StoreServices.Api.Author.Application
         {
             public readonly ContextAuthor _context;
             public Handler(ContextAuthor context)
-            { 
+            {
                 _context = context;
             }
             public async Task<Unit> Handle(Execute request, CancellationToken cancellationToken)
@@ -32,11 +32,12 @@ namespace StoreServices.Api.Author.Application
                     Name = request.Name,
                     BirthDate = request.BirthDate,
                     LastName = request.LastName,
+                    AuthorBookGuid = Guid.NewGuid().ToString()
                 };
 
                 _context.AuthorBook.Add(BookAuthor);
-               var rows =await  _context.SaveChangesAsync();
-                if(rows >0)
+                var rows = await _context.SaveChangesAsync();
+                if (rows > 0)
                     return Unit.Value;
 
                 throw new Exception("There was an error inseting Author");
