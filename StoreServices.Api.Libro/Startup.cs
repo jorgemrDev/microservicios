@@ -1,3 +1,5 @@
+using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using StoreServices.Api.Libro.Aplicacion;
 using StoreServices.Api.Libro.Repository;
 using System;
 using System.Collections.Generic;
@@ -28,7 +31,7 @@ namespace StoreServices.Api.Libro
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<New>());
             services.AddDbContext<LibraryContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("ConexionDatabase"));
@@ -37,6 +40,9 @@ namespace StoreServices.Api.Libro
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StoreServices.Api.Libro", Version = "v1" });
             });
+
+            services.AddMediatR(typeof(New.Handler).Assembly);
+            services.AddAutoMapper(typeof(Query.Handler));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
