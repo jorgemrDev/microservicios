@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,7 +31,7 @@ namespace StoreServices.Api.Autor
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<New>());
             services.AddDbContext<ContextAuthor>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("ConexionDatabase"));
@@ -41,6 +42,7 @@ namespace StoreServices.Api.Autor
             });
 
             services.AddMediatR(typeof(New.Handler).Assembly);
+            services.AddAutoMapper(typeof(Query.Handler));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
