@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServices.Api.Author", "StoreServices.Api.Author\StoreServices.Api.Author.csproj", "{90ACACD1-6D87-4E1B-8F93-C1FBF57E1645}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreServices.Api.Libro", "StoreServices.Api.Libro\StoreServices.Api.Libro.csproj", "{4B3A3D14-7938-4E40-B9B8-B49E24DB4B3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServices.Api.Libro", "StoreServices.Api.Libro\StoreServices.Api.Libro.csproj", "{4B3A3D14-7938-4E40-B9B8-B49E24DB4B3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreServices.Api.ShoppingCart", "StoreServices.Api.ShoppingCart\StoreServices.Api.ShoppingCart.csproj", "{46493218-E32A-4007-8C2A-F5E1D0B58A8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StoreServices.Api.ShoppingCart", "StoreServices.Api.ShoppingCart\StoreServices.Api.ShoppingCart.csproj", "{46493218-E32A-4007-8C2A-F5E1D0B58A8D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
