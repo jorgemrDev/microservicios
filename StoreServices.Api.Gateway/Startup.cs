@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using StoreServices.Api.Gateway.Implementations;
+using StoreServices.Api.Gateway.Interfaces;
+using StoreServices.Api.Gateway.MessageHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +30,13 @@ namespace StoreServices.Api.Gateway
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<IAuthorRemote, AuthorRemote>();
+            services.AddHttpClient("AuthorService", config =>
+            {
+                config.BaseAddress = new Uri("storeservices.api.author");
+            });
             //services.AddControllers();
-            services.AddOcelot();
+            services.AddOcelot().AddDelegatingHandler<BookHandler>();
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "StoreServices.Api.Gateway", Version = "v1" });
