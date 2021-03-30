@@ -1,0 +1,88 @@
+{
+  "Routes": [
+    {
+      "DownStreamPathTemplate": "/api/Book",
+      "DownStreamScheme": "http",
+      "DownStreamHostAndPorts": [
+        {
+          "Host": "storeservices.api.libro",
+          "Port": "80"
+        }
+      ],
+      "UpStreamPathTemplate": "/Book",
+      "UpStreamHttpMethod": [ "GET", "POST" ],
+      "Key": "BookTotal"
+    },
+    {
+      "DownStreamPathTemplate": "/api/Book/{id}",
+      "DownStreamScheme": "http",
+      "DownStreamHostAndPorts": [
+        {
+          "Host": "storeservices.api.libro",
+          "Port": "80"
+        }
+      ],
+      "UpStreamPathTemplate": "/Book/{id}",
+      "UpStreamHttpMethod": [ "GET", "DELETE" ]
+    },
+    {
+      "DownStreamPathTemplate": "/api/Author",
+      "DownStreamScheme": "http",
+      "DownStreamHostAndPorts": [
+        {
+          "Host": "storeservices.api.author",
+          "Port": "80"
+        }
+      ],
+      "UpStreamPathTemplate": "/Author",
+      "UpStreamHttpMethod": [ "GET", "POST" ],
+      "Key": "AuthorTotal"
+    },
+    {
+      "DownStreamPathTemplate": "/api/Author/{id}",
+      "DownStreamScheme": "http",
+      "DownStreamHostAndPorts": [
+        {
+          "Host": "storeservices.api.author",
+          "Port": "80"
+        }
+      ],
+      "UpStreamPathTemplate": "/Author/{id}",
+      "UpStreamHttpMethod": [ "GET", "DELETE" ]
+    },
+    {
+      "DownStreamPathTemplate": "/api/ShoppingCarts",
+      "DownStreamScheme": "http",
+      "DownStreamHostAndPorts": [
+        {
+          "Host": "storeservices.api.shoppingcart",
+          "Port": "80"
+        }
+      ],
+      "UpStreamPathTemplate": "/ShoppingCart",
+      "UpStreamHttpMethod": [ "GET", "POST" ]
+    },
+    {
+      "DownStreamPathTemplate": "/api/ShoppingCarts/{id}",
+      "DownStreamScheme": "http",
+      "DownStreamHostAndPorts": [
+        {
+          "Host": "storeservices.api.shoppingcart",
+          "Port": "80"
+        }
+      ],
+      "UpStreamPathTemplate": "/ShoppingCart/{id}",
+      "UpStreamHttpMethod": [ "GET", "DELETE" ]
+    }
+
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "AuthorTotal",
+        "BookTotal"
+      ],
+      "UpStreamPathTemplate":  "/BookAuthor"
+    }
+  ]
+}

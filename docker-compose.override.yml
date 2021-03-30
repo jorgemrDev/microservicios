@@ -21,3 +21,12 @@ services:
     ports:
       - "6106:80"
 
+
+  storeservices.api.gateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - storeservices.api.libro
+    ports:
+      - "6107:80"
+
