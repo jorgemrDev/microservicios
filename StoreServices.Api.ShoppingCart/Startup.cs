@@ -44,7 +44,7 @@ namespace StoreServices.Api.ShoppingCart
             services.AddMediatR(typeof(New.Handler).Assembly);
             services.AddHttpClient("Books", config =>
             {
-                config.BaseAddress = new Uri("http://localhost:29169");
+                config.BaseAddress = new Uri("http://storeservices.api.libro");
             });
         }
 

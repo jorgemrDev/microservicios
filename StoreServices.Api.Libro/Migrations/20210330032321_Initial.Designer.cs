@@ -10,7 +10,7 @@ using StoreServices.Api.Libro.Repository;
 namespace StoreServices.Api.Libro.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20210326151025_Initial")]
+    [Migration("20210330032321_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

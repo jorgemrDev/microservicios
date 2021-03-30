@@ -2,7 +2,8 @@
 using StoreServices.Api.ShoppingCart.Models;
 //dotnet ef migrations add Initial --project StoreServices.Api.ShoppingCart
 //dotnet ef database update --project StoreServices.Api.ShoppingCart
-
+//Add - Migration Initial - Project StoreServices.Api.ShoppingCart - StartupProject StoreServices.Api.ShoppingCart
+//Update-Database  -Project StoreServices.Api.ShoppingCart -StartupProject StoreServices.Api.ShoppingCart
 namespace StoreServices.Api.ShoppingCart.Repository
 {
     public class ShoppingCartContext : DbContext

@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  storeservices.api.author:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "6104:80"
+
+  storeservices.api.libro:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "6105:80"
+
+
+  storeservices.api.shoppingcart:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Services__Books=http://storeservices.api.libro
+    ports:
+      - "6106:80"
+
