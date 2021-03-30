@@ -8,6 +8,6 @@ namespace StoreServices.Api.Gateway.Interfaces
 {
    public  interface IAuthorRemote
     {
-        Task<(bool result, AuthorModelRemote autor, string errorMessage)> GetAuthor(Guid AuthorId);
+        Task<(bool result, AuthorModelRemote author, string errorMessage)> GetAuthor(Guid AuthorId);
     }
 }

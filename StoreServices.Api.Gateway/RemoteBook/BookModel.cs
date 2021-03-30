@@ -11,5 +11,7 @@ namespace StoreServices.Api.Gateway.RemoteBook
         public string Title { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public Guid? Author { get; set; }
+
+        public AuthorModelRemote AuthorData { get; set; }
     }
 }

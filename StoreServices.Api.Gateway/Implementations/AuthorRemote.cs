@@ -22,7 +22,7 @@ namespace StoreServices.Api.Gateway.Implementations
             _httpClient = httpClient;
             _logger = logger;
         }
-        public async Task<(bool result, AuthorModelRemote autor, string errorMessage)> GetAuthor(Guid AuthorId)
+        public async Task<(bool result, AuthorModelRemote author, string errorMessage)> GetAuthor(Guid AuthorId)
         {
             try
             {
