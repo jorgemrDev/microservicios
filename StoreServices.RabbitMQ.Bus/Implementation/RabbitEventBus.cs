@@ -83,5 +83,35 @@ namespace StoreServices.RabbitMQ.Bus.Implementation
             consumer.Received += Consumer_Delegate;
             channel.BasicConsume(eventName, true, consumer);
         }
+
+        private async Task Consumer_Delegate(object sender, BasicDeliverEventArgs e)
+        {
+            var eventName = e.RoutingKey;
+            var message = Encoding.UTF8.GetString(e.Body.ToArray());
+
+            try
+            {
+                if (_handlers.ContainsKey(eventName))
+                {
+                    var suscriptions = _handlers[eventName];
+                    foreach (var item in suscriptions)
+                    {
+                        var handler = Activator.CreateInstance(item);
+                        if (handler == null) continue;
+                        
+                        var eventType = _eventTypes.SingleOrDefault(x => x.Name == eventName);
+                        var eventDS = JsonConvert.DeserializeObject(message, eventType);
+
+                        var type = typeof(IEventHandler<>).MakeGenericType(eventType);
+                        await (Task) type.GetMethod("Handle").Invoke(handler, new object[] { eventDS });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -2,6 +2,8 @@
 using MediatR;
 using StoreServices.Api.Libro.Models;
 using StoreServices.Api.Libro.Repository;
+using StoreServices.RabbitMQ.Bus.EventQueue;
+using StoreServices.RabbitMQ.Bus.RabbitBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,10 +33,14 @@ namespace StoreServices.Api.Libro.Aplicacion
 
         public class Handler : IRequestHandler<Execute>
         {
-            public readonly LibraryContext _context;
-            public Handler(LibraryContext context)
+            private readonly LibraryContext _context;
+            private readonly IRabbitEventBus _eventBus;
+
+            public Handler(LibraryContext context,
+                IRabbitEventBus eventBus)
             {
                 _context = context;
+                _eventBus = eventBus;
             }
             public async Task<Unit> Handle(Execute request, CancellationToken cancellationToken)
             {
@@ -47,8 +53,12 @@ namespace StoreServices.Api.Libro.Aplicacion
 
                 _context.Book.Add(book);
                 var rows = await _context.SaveChangesAsync();
+
+                _eventBus.Publish(new EmailEventQueue("undertaker39@hotmail.com", request.Title, "Mail from RabbitMQ"));
+
                 if (rows > 0)
                     return Unit.Value;
+
 
                 throw new Exception("There was an error inserting Book");
             }

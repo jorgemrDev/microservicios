@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using StoreServices.Api.Libro.Aplicacion;
 using StoreServices.Api.Libro.Repository;
+using StoreServices.RabbitMQ.Bus.Implementation;
+using StoreServices.RabbitMQ.Bus.RabbitBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,7 @@ namespace StoreServices.Api.Libro
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddTransient<IRabbitEventBus, RabbitEventBus>();
             services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<New>());
             services.AddDbContext<LibraryContext>(options =>
             {
