@@ -33,7 +33,7 @@ namespace StoreServices.Api.Gateway
             services.AddSingleton<IAuthorRemote, AuthorRemote>();
             services.AddHttpClient("AuthorService", config =>
             {
-                config.BaseAddress = new Uri("storeservices.api.author");
+                config.BaseAddress = new Uri("http://storeservices.api.gateway");
             });
             //services.AddControllers();
             services.AddOcelot().AddDelegatingHandler<BookHandler>();
