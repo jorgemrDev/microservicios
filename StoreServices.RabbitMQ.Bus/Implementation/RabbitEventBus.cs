@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -17,18 +18,20 @@ namespace StoreServices.RabbitMQ.Bus.Implementation
     {
         private readonly IMediator _mediator;
         private readonly Dictionary<string, List<Type>> _handlers;
-        List<Type> _eventTypes;
+        private readonly List<Type> _eventTypes;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public RabbitEventBus(IMediator mediator
-            )
+        public RabbitEventBus(IMediator mediator,
+             IServiceScopeFactory serviceScopeFactory)
         {
             _mediator = mediator;
             _handlers = new Dictionary<string, List<Type>>();
             _eventTypes = new List<Type>();
+            _serviceScopeFactory = serviceScopeFactory;
         }
         public void Publish<T>(T @event) where T : Event
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "rabbit-books-web-manage" };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
@@ -71,7 +74,7 @@ namespace StoreServices.RabbitMQ.Bus.Implementation
 
             var factory = new ConnectionFactory()
             {
-                HostName = "localhost",
+                HostName = "rabbit-books-web-manage",
                 DispatchConsumersAsync = true
             };
 
@@ -93,17 +96,20 @@ namespace StoreServices.RabbitMQ.Bus.Implementation
             {
                 if (_handlers.ContainsKey(eventName))
                 {
-                    var suscriptions = _handlers[eventName];
-                    foreach (var item in suscriptions)
+                    using (var scope = _serviceScopeFactory.CreateScope())
                     {
-                        var handler = Activator.CreateInstance(item);
-                        if (handler == null) continue;
-                        
-                        var eventType = _eventTypes.SingleOrDefault(x => x.Name == eventName);
-                        var eventDS = JsonConvert.DeserializeObject(message, eventType);
+                        var suscriptions = _handlers[eventName];
+                        foreach (var item in suscriptions)
+                        {
+                            var handler = scope.ServiceProvider.GetService(item);//Activator.CreateInstance(item);
+                            if (handler == null) continue;
 
-                        var type = typeof(IEventHandler<>).MakeGenericType(eventType);
-                        await (Task) type.GetMethod("Handle").Invoke(handler, new object[] { eventDS });
+                            var eventType = _eventTypes.SingleOrDefault(x => x.Name == eventName);
+                            var eventDS = JsonConvert.DeserializeObject(message, eventType);
+
+                            var type = typeof(IEventHandler<>).MakeGenericType(eventType);
+                            await (Task)type.GetMethod("Handle").Invoke(handler, new object[] { eventDS });
+                        }
                     }
                 }
             }

@@ -10,7 +10,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using StoreServices.Api.Author.Application;
+using StoreServices.Api.Author.RabbitHandler;
 using StoreServices.Api.Author.Repository;
+using StoreServices.Mailing.Email.SendGrid.Implementations;
+using StoreServices.Mailing.Email.SendGrid.Interfaces;
+using StoreServices.RabbitMQ.Bus.EventQueue;
+using StoreServices.RabbitMQ.Bus.Implementation;
+using StoreServices.RabbitMQ.Bus.RabbitBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +36,14 @@ namespace StoreServices.Api.Autor
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IEventHandler<EmailEventQueue>, EmailEventHandler>();
+            services.AddSingleton<IRabbitEventBus, RabbitEventBus>(sp => {
+                var scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+                return new RabbitEventBus(sp.GetService<IMediator>(), scopeFactory);
+            });
 
+            services.AddSingleton<ISendGridSend, SendGridSend>();
+            services.AddTransient<EmailEventHandler>();
             services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<New>());
             services.AddDbContext<ContextAuthor>(options =>
             {
@@ -63,6 +76,9 @@ namespace StoreServices.Api.Autor
             {
                 endpoints.MapControllers();
             });
+
+            var eventBus = app.ApplicationServices.GetRequiredService<IRabbitEventBus>();
+            eventBus.Suscribe<EmailEventQueue, EmailEventHandler>();
         }
     }
 }
